@@ -1,0 +1,27 @@
+A cluster is a group of different machines or computers connected in such a way that they work as a single independent system usually to increase  
+computational power for performing resouce hungry tasks.
+Hadoop Cluster
+Hadoop clusters are comprised of three different node types: master nodes, worker nodes, and client nodes. Understanding the different
+node types will help you plan your cluster, and configure the appropriate number and type of nodes when creating a cluster.
+The three types of node groups in a Hadoop deployment are master nodes, worker nodes, and client nodes. Master nodes oversee the
+following key operations that comprise Hadoop: storing data in the Hadoop Distributed File System (HDFS) and running parallel computations
+on that data using MapReduce. The NameNode coordinates the data storage function (with the HDFS), while the JobTracker oversees and 
+coordinates the parallel processing of data using MapReduce.
+Worker nodes make up the majority of virtual machines and perform the job of storing the data and running computations. Each worker node
+runs both a DataNode and TaskTracker service that communicates with, and receives instructions from their master nodes. The TaskTracker
+service is subordinate to the JobTracker, and the DataNode service is subordinate to the NameNode.
+Client nodes have Hadoop installed with all the cluster settings, but are neither master or worker nodes. Instead, the client node loads
+data into the cluster, submits MapReduce jobs describing how that data should be processed, and then retrieves or views the results of
+the job when processing is finished.
+
+HADOOP RACK AWARENESS
+
+The HDFS and the Map/Reduce components are rack-aware.
+
+The NameNode and the JobTracker obtains the rack id of the slaves in the cluster by invoking an API resolve in an administrator 
+configured module. The API resolves the slave’s DNS name (also IP address) to a rack id. What module to use can be configured using 
+the configuration item topology.node.switch.mapping.impl. The default implementation of the same runs a script/command configured using 
+topology.script.file.name. If topology.script.file.name is not set, the rack id /default-rack is returned for any passed IP address.
+The additional configuration in the Map/Reduce part is mapred.cache.task.levels which determines the number of levels (in the network 
+topology) of caches. So, for example, if it is the default value of 2, two levels of caches will be constructed – one for hosts (host -> 
+task mapping) and another for racks (rack -> task mapping).
